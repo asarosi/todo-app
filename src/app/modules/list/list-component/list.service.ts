@@ -10,6 +10,6 @@ export class ListService {
   }
 
   createListItem() {
-    return new Item(1, 'tite', new Date());
+    return new Item(1, 'I should go to the local market to buy some vegetables and milk', new Date());
   }
 }

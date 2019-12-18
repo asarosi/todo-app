@@ -1,6 +1,17 @@
-<h1 class="title">
-  ToDo list
-</h1>
+<div class="columns">
+  <h1 class="title">
+    ToDo list
+  </h1>
+</div>
 <mat-list *ngFor="let item of items">
-  <mat-list-item>{{item.id}} | {{item.title}} | {{item.deadline}}</mat-list-item>
+  <mat-list-item class="columns tile notification is-primary">
+    <div class="column is-one-fifth">{{item.id}}</div>
+    <div class="column">{{item.title}}</div>
+    <div class="column is-one-fifth">{{item.deadline | date : 'longDate'}}</div>
+    <div class="column is-one-fifth">
+      <i class="material-icons">done</i>
+      <i class="material-icons">delete</i>
+      <i class="material-icons">edit</i>
+    </div>
+  </mat-list-item>
 </mat-list>
