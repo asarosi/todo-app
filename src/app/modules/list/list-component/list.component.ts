@@ -1,19 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Item } from './item';
 import { ListService } from './list.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'LL',
-  },
-  display: {
-    dateInput: 'LL',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
+import { AbstractControlOptions, FormControl, FormGroup, Validators } from '@angular/forms';
+import * as moment from 'moment';
+import { HelperService } from '../../helpers/helper.service';
 
 @Component({
   selector: 'app-list-component',
@@ -22,18 +12,16 @@ export const MY_FORMATS = {
 })
 export class ListComponent implements OnInit {
   public itemForm: FormGroup;
-  items: Item[];
+  public items: Item[];
+  private inputValidationOptions: AbstractControlOptions = {
+    validators: Validators.required,
+    updateOn: 'blur'
+  };
 
-  constructor(private listService: ListService) {
+  constructor(private listService: ListService, private helperService: HelperService) {
     this.itemForm = new FormGroup({
-      title: new FormControl('', {
-        validators: Validators.required,
-        updateOn: 'blur'
-      }),
-      deadline: new FormControl(new Date(), {
-        validators: Validators.required,
-        updateOn: 'blur'
-      })
+      title: new FormControl('', this.inputValidationOptions),
+      deadline: new FormControl(helperService.getTodayDate(), this.inputValidationOptions)
     });
     this.items = [];
   }
@@ -47,8 +35,12 @@ export class ListComponent implements OnInit {
 
   onSubmit(formValues) {
     if (this.itemForm.valid) {
-      const item = this.listService.createListItem(formValues.title, formValues.deadline);
+      const item = this.listService.createListItem(formValues.title, formValues.deadline.startOf('day'));
       this.items.push(item);
     }
+  }
+
+  getItemClass(date: moment.Moment) {
+    return this.listService.getListItemStyle(date.startOf('day'));
   }
 }
