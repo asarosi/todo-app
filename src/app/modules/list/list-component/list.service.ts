@@ -15,13 +15,17 @@ export class ListService {
   }
 
   createListItem(title: string, deadline: Moment) {
-    return new Item(null, title, deadline);
+    return new Item(title, deadline);
   }
 
-  getListItemStyle(deadline: Moment) {
-    const remainingDays = deadline.diff(this.currentDate, 'days');
-
+  getListItemStyle(deadline: Moment, isCompleted: boolean = false) {
     let style = 'notification ';
+
+    if (isCompleted) {
+      return style + ' is-completed is-light';
+    }
+
+    const remainingDays = deadline.diff(this.currentDate, 'days');
 
     if (remainingDays >= 1) {
       style += 'is-success';
@@ -32,5 +36,11 @@ export class ListService {
     }
 
     return style;
+  }
+
+  remove(list: Item[], id: string) {
+    return list.filter((item) => {
+      return item.id !== id;
+    });
   }
 }

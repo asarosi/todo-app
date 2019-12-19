@@ -40,7 +40,15 @@ export class ListComponent implements OnInit {
     }
   }
 
-  getItemClass(date: moment.Moment) {
-    return this.listService.getListItemStyle(date.startOf('day'));
+  getItemClass(date: moment.Moment, isCompleted: boolean) {
+    return this.listService.getListItemStyle(date.startOf('day'), isCompleted);
+  }
+
+  completeItem(item: Item) {
+    item.isCompleted = !item.isCompleted;
+  }
+
+  removeItem(id: string) {
+    this.items = this.listService.remove(this.items, id);
   }
 }
