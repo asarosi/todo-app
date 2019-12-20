@@ -6,6 +6,7 @@ export class Item {
               public deadline: Moment,
               public id: string = uuid.v4(),
               public isCompleted: boolean = false,
-              public isEditing: boolean = false) {
+              public isEditing: boolean = false,
+              public updates: Item = {} as Item) {
   }
 }

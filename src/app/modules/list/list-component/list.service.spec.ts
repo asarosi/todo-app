@@ -79,12 +79,11 @@ describe('ListService', () => {
 
     listService.addPendingUpdates(item, today);
 
-    // @ts-ignore
     expect(item).toEqual(jasmine.objectContaining({
-      _u: {
+      updates: {
         deadline: today
       }
-    }));
+    } as Item));
   });
 
   it('should remove pending updates to the selected item', () => {
@@ -94,19 +93,15 @@ describe('ListService', () => {
     const today = helperService.getTodayDate();
     const item = new Item('Title A', today, 'ABC-123');
 
-    // @ts-ignore
-    item._u = {};
-    // @ts-ignore
-    item._u.deadline = today;
+    item.updates.deadline = today;
 
     listService.removePendingUpdates(item);
 
-    // @ts-ignore
     expect(item).not.toEqual(jasmine.objectContaining({
-      _u: {
+      updates: {
         deadline: today
       }
-    }));
+    } as Item));
   });
 
   it('should apply pending updates to the selected item', () => {
@@ -117,20 +112,16 @@ describe('ListService', () => {
     const tomorrow = today.add(1, 'day');
     const item = new Item('Title A', today, 'ABC-123');
 
-    // @ts-ignore
-    item._u = {};
-    // @ts-ignore
-    item._u.deadline = tomorrow;
+    item.updates.deadline = tomorrow;
 
     listService.removePendingUpdates(item);
 
     expect(item.deadline).toEqual(tomorrow);
 
-    // @ts-ignore
     expect(item).not.toEqual(jasmine.objectContaining({
-      _u: {
+      updates: {
         deadline: today
       }
-    }));
+    } as Item));
   });
 });

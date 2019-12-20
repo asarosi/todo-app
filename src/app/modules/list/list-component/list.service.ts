@@ -44,25 +44,25 @@ export class ListService {
     });
   }
 
-  addPendingUpdates(item, value) {
+  addPendingUpdates(item: Item, value: Moment) {
     if (value) {
-      item._u = {};
-      item._u.deadline = value;
+      item.updates.deadline = value;
     }
   }
 
-  removePendingUpdates(item) {
-    if (item._u) {
-      delete item._u.deadline;
-      delete item._u;
+  removePendingUpdates(item: Item) {
+    if (item.updates.deadline) {
+      delete item.updates.deadline;
     }
     item.isEditing = false;
   }
 
-  applyPendingUpdates(item) {
-    if (item._u) {
-      item.deadline = item._u.deadline;
+  applyPendingUpdates(item: Item) {
+    if (item.updates.deadline) {
+      item.deadline = item.updates.deadline;
       this.removePendingUpdates(item);
+    } else {
+      item.isEditing = false;
     }
   }
 }
