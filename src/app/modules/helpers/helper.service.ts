@@ -9,7 +9,7 @@ export class HelperService {
   constructor() {
   }
 
-  getTodayDate() {
+  getTodayDate(): moment.Moment {
     return moment().startOf('day');
   }
 }
