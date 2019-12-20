@@ -21,7 +21,21 @@
 
 .add-button-container
   padding-left: 0
+  padding-right: 0
   padding-top: 0
+
+  & button
+    +mobile
+      width: 100%
 
 .notification.is-success
   background-color: rgb(0, 176, 185)
+
+.mat-button-toggle-group
+  +mobile
+    width: 100%
+
+  .mat-button-toggle
+    +mobile
+      width: 100%
+

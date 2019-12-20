@@ -5,6 +5,7 @@ export class Item {
   constructor(public title: string,
               public deadline: Moment,
               public id: string = uuid.v4(),
-              public isCompleted: boolean = false) {
+              public isCompleted: boolean = false,
+              public isEditing: boolean = false) {
   }
 }

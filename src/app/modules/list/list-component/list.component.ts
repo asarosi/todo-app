@@ -13,6 +13,7 @@ import { HelperService } from '../../helpers/helper.service';
 export class ListComponent implements OnInit {
   public itemForm: FormGroup;
   public items: Item[];
+
   private inputValidationOptions: AbstractControlOptions = {
     validators: Validators.required,
     updateOn: 'blur'
@@ -21,7 +22,11 @@ export class ListComponent implements OnInit {
   constructor(private listService: ListService, private helperService: HelperService) {
     this.itemForm = new FormGroup({
       title: new FormControl('', this.inputValidationOptions),
-      deadline: new FormControl(helperService.getTodayDate(), this.inputValidationOptions)
+      deadline: new FormControl(
+        {
+          value: helperService.getTodayDate(),
+          disabled: true
+        }, this.inputValidationOptions)
     });
     this.items = [];
   }
@@ -34,8 +39,9 @@ export class ListComponent implements OnInit {
   }
 
   onSubmit(formValues) {
-    if (this.itemForm.valid) {
-      const item = this.listService.createListItem(formValues.title, formValues.deadline.startOf('day'));
+    const form = this.itemForm;
+    if (form.valid) {
+      const item = this.listService.createListItem(formValues.title, form.getRawValue().deadline.startOf('day'));
       this.items.push(item);
     }
   }
@@ -50,5 +56,17 @@ export class ListComponent implements OnInit {
 
   removeItem(id: string) {
     this.items = this.listService.remove(this.items, id);
+  }
+
+  onSave(item) {
+    this.listService.applyPendingUpdates(item);
+  }
+
+  onValueChange(item, value) {
+    this.listService.addPendingUpdates(item, value);
+  }
+
+  onCancel(item) {
+    this.listService.removePendingUpdates(item);
   }
 }

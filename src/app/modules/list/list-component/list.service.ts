@@ -22,7 +22,7 @@ export class ListService {
     let style = 'notification ';
 
     if (isCompleted) {
-      return style + ' is-completed is-light';
+      return style + 'is-completed is-light';
     }
 
     const remainingDays = deadline.diff(this.currentDate, 'days');
@@ -42,5 +42,27 @@ export class ListService {
     return list.filter((item) => {
       return item.id !== id;
     });
+  }
+
+  addPendingUpdates(item, value) {
+    if (value) {
+      item._u = {};
+      item._u.deadline = value;
+    }
+  }
+
+  removePendingUpdates(item) {
+    if (item._u) {
+      delete item._u.deadline;
+      delete item._u;
+    }
+    item.isEditing = false;
+  }
+
+  applyPendingUpdates(item) {
+    if (item._u) {
+      item.deadline = item._u.deadline;
+      this.removePendingUpdates(item);
+    }
   }
 }
