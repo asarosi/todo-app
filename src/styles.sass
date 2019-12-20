@@ -14,3 +14,17 @@
   & .mat-list-base .mat-list-item .mat-list-item-content
     +mobile
       display: block
+
+  & .mat-form-field
+    +mobile
+      width: 100%
+
+.is-completed
+  text-decoration: line-through
+
+.mat-button-toggle-checked
+  background-color: white
+
+.is-success, .is-danger
+  .mat-form-field-appearance-legacy .mat-form-field-label
+    color: rgba(255, 255, 255, 0.54)
