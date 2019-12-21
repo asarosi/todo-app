@@ -11,8 +11,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { LocalStorageService } from '../../helpers/local-storage.service';
 
-describe('ListComponentComponent', () => {
+describe('ListComponent', () => {
   let component: ListComponent;
   let fixture: ComponentFixture<ListComponent>;
 
@@ -31,6 +32,9 @@ describe('ListComponentComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         NoopAnimationsModule
+      ],
+      providers: [
+        LocalStorageService
       ]
     })
       .compileComponents();
