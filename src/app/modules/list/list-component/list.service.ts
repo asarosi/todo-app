@@ -14,11 +14,11 @@ export class ListService {
     this.currentDate = helperService.getTodayDate();
   }
 
-  createListItem(title: string, deadline: Moment) {
+  createListItem(title: string, deadline: Moment): Item {
     return new Item(title, deadline);
   }
 
-  getListItemStyle(deadline: Moment, isCompleted: boolean = false) {
+  getListItemStyle(deadline: Moment, isCompleted: boolean = false): string {
     let style = 'notification ';
 
     if (isCompleted) {
@@ -38,26 +38,26 @@ export class ListService {
     return style;
   }
 
-  remove(list: Item[], id: string) {
+  remove(list: Item[], id: string): Item[] {
     return list.filter((item) => {
       return item.id !== id;
     });
   }
 
-  addPendingUpdates(item: Item, value: Moment) {
+  addPendingUpdates(item: Item, value: Moment): void {
     if (value) {
       item.updates.deadline = value;
     }
   }
 
-  removePendingUpdates(item: Item) {
+  removePendingUpdates(item: Item): void {
     if (item.updates.deadline) {
       delete item.updates.deadline;
     }
     item.isEditing = false;
   }
 
-  applyPendingUpdates(item: Item) {
+  applyPendingUpdates(item: Item): void {
     if (item.updates.deadline) {
       item.deadline = item.updates.deadline;
       this.removePendingUpdates(item);

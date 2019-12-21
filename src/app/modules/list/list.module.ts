@@ -18,6 +18,7 @@ import {
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { LocalStorageService } from '../helpers/local-storage.service';
 
 const MY_FORMATS = {
   parse: {
@@ -53,11 +54,11 @@ const MY_FORMATS = {
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
     },
-
     {
       provide: MAT_DATE_FORMATS,
       useValue: MY_FORMATS
     },
+    LocalStorageService
   ],
 })
 export class ListModule {

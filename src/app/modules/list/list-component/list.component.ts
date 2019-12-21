@@ -4,6 +4,7 @@ import { ListService } from './list.service';
 import { AbstractControlOptions, FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { HelperService } from '../../helpers/helper.service';
+import { LocalStorageService } from '../../helpers/local-storage.service';
 
 @Component({
   selector: 'app-list-component',
@@ -19,7 +20,7 @@ export class ListComponent implements OnInit {
     updateOn: 'blur'
   };
 
-  constructor(private listService: ListService, private helperService: HelperService) {
+  constructor(private listService: ListService, private helperService: HelperService, private localStorageService: LocalStorageService) {
     this.itemForm = new FormGroup({
       title: new FormControl('', this.inputValidationOptions),
       deadline: new FormControl(
@@ -28,45 +29,50 @@ export class ListComponent implements OnInit {
           disabled: true
         }, this.inputValidationOptions)
     });
-    this.items = [];
+    this.items = localStorageService.getListFromStorage();
   }
 
   ngOnInit() {
   }
 
-  hasError(controlName: string, errorName: string) {
+  hasError(controlName: string, errorName: string): boolean {
     return this.itemForm.controls[controlName].hasError(errorName);
   }
 
-  onSubmit(formValues) {
+  onSubmit(formValues): void {
     const form = this.itemForm;
     if (form.valid) {
       const item = this.listService.createListItem(formValues.title, form.getRawValue().deadline.startOf('day'));
       this.items.push(item);
+      this.localStorageService.storeOnLocalStorage(this.items);
     }
   }
 
-  getItemClass(date: moment.Moment, isCompleted: boolean) {
-    return this.listService.getListItemStyle(date.startOf('day'), isCompleted);
+  getItemClass(date: moment.Moment, isCompleted: boolean): string {
+    const d = moment(date).startOf('day');
+    return this.listService.getListItemStyle(d, isCompleted);
   }
 
-  completeItem(item: Item) {
+  completeItem(item: Item): void {
     item.isCompleted = !item.isCompleted;
+    this.localStorageService.storeOnLocalStorage(this.items);
   }
 
-  removeItem(id: string) {
+  removeItem(id: string): void {
     this.items = this.listService.remove(this.items, id);
+    this.localStorageService.storeOnLocalStorage(this.items);
   }
 
-  onSave(item) {
+  onSave(item): void {
     this.listService.applyPendingUpdates(item);
+    this.localStorageService.storeOnLocalStorage(this.items);
   }
 
-  onValueChange(item, value) {
+  onValueChange(item, value): void {
     this.listService.addPendingUpdates(item, value);
   }
 
-  onCancel(item) {
+  onCancel(item): void {
     this.listService.removePendingUpdates(item);
   }
 }
