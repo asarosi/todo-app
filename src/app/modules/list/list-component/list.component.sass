@@ -1,4 +1,5 @@
 @import '../../../../../node_modules/bulma/bulma.sass'
+@import '../../../../styles.sass'
 
 .button-group-container
   text-align: right
@@ -28,8 +29,12 @@
     +mobile
       width: 100%
 
-.notification.is-success
-  background-color: rgb(0, 176, 185)
+.notification
+  &.is-success
+    background-color: $crosskey-teal
+
+  &.is-warning
+    background-color: $crosskey-amber
 
 .mat-button-toggle-group
   +mobile
@@ -45,3 +50,6 @@
 
 .mat-datepicker-toggle
   color: black
+
+.inline-date-editor
+  margin-bottom: -1.25em

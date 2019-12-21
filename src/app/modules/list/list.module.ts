@@ -19,6 +19,7 @@ import {
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { LocalStorageService } from '../helpers/local-storage.service';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 const MY_FORMATS = {
   parse: {
@@ -46,7 +47,8 @@ const MY_FORMATS = {
     MatNativeDateModule,
     MatButtonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DragDropModule
   ],
   providers: [
     {

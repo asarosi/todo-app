@@ -30,45 +30,51 @@
     <button [disabled]="!itemForm.valid" class="button is-primary" mat-button>Add item</button>
   </div>
 </form>
-
-<mat-list *ngFor="let item of items">
-  <mat-list-item [ngClass]="getItemClass(item.deadline, item.isCompleted)" class="columns tile box is-desktop">
-    <div class="column">{{item.title}}</div>
-    <div class="column is-3">
-      <div *ngIf="!item.isEditing">
-        {{item.deadline | date : 'longDate'}}
+<div (cdkDropListDropped)="move($event)" cdkDropList class="drop-list-container">
+  <mat-list *ngFor="let item of items" cdkDrag class="drop-item">
+    <mat-list-item *cdkDragPreview [ngClass]="getItemClass(item.deadline, item.isCompleted)"
+                   class="drop-item-placeholder">
+      <div>{{item.title}}</div>
+    </mat-list-item>
+    <mat-list-item [ngClass]="getItemClass(item.deadline, item.isCompleted)" class="columns tile box is-desktop">
+      <div class="column">{{item.title}}</div>
+      <div class="column is-3">
+        <div *ngIf="!item.isEditing">
+          {{item.deadline | date : 'longDate'}}
+        </div>
+        <mat-form-field *ngIf="item.isEditing" class="inline-date-editor">
+          <input (ngModelChange)="onValueChange(item, $event)" [matDatepicker]="picker" [ngModel]="item.deadline"
+                 disabled
+                 matInput name="deadline" placeholder="Due date">
+          <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+          <mat-datepicker #picker disabled="false"></mat-datepicker>
+        </mat-form-field>
       </div>
-      <mat-form-field *ngIf="item.isEditing">
-        <input (ngModelChange)="onValueChange(item, $event)" [matDatepicker]="picker" [ngModel]="item.deadline" disabled
-               matInput name="deadline" placeholder="Due date">
-        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
-        <mat-datepicker #picker disabled="false"></mat-datepicker>
-      </mat-form-field>
-    </div>
-    <div class="column is-2 button-group-container">
-      <mat-button-toggle-group>
-        <mat-button-toggle (click)="completeItem(item)" *ngIf="!item.isCompleted && !item.isEditing"
-                           aria-label="Complete item">
-          <mat-icon>done</mat-icon>
-        </mat-button-toggle>
-        <mat-button-toggle (click)="completeItem(item)" *ngIf="item.isCompleted && !item.isEditing"
-                           aria-label="Complete item">
-          <mat-icon>undo</mat-icon>
-        </mat-button-toggle>
-        <mat-button-toggle (click)="item.isEditing = !item.isEditing" *ngIf="!item.isCompleted && !item.isEditing"
-                           aria-label="Edit item">
-          <mat-icon>edit</mat-icon>
-        </mat-button-toggle>
-        <mat-button-toggle (click)="removeItem(item.id)" *ngIf="!item.isEditing" aria-label="Delete item">
-          <mat-icon>delete</mat-icon>
-        </mat-button-toggle>
-        <mat-button-toggle (click)="onSave(item)" *ngIf="item.isEditing" aria-label="Save item">
-          <mat-icon>save</mat-icon>
-        </mat-button-toggle>
-        <mat-button-toggle (click)="onCancel(item)" *ngIf="item.isEditing" aria-label="Cancel edit">
-          <mat-icon>close</mat-icon>
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
-  </mat-list-item>
-</mat-list>
+      <div class="column is-2 button-group-container">
+        <mat-button-toggle-group>
+          <mat-button-toggle (click)="completeItem(item)" *ngIf="!item.isCompleted && !item.isEditing"
+                             aria-label="Complete item">
+            <mat-icon>done</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle (click)="completeItem(item)" *ngIf="item.isCompleted && !item.isEditing"
+                             aria-label="Complete item">
+            <mat-icon>undo</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle (click)="item.isEditing = !item.isEditing" *ngIf="!item.isCompleted && !item.isEditing"
+                             aria-label="Edit item">
+            <mat-icon>edit</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle (click)="removeItem(item.id)" *ngIf="!item.isEditing" aria-label="Delete item">
+            <mat-icon>delete</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle (click)="onSave(item)" *ngIf="item.isEditing" aria-label="Save item">
+            <mat-icon>save</mat-icon>
+          </mat-button-toggle>
+          <mat-button-toggle (click)="onCancel(item)" *ngIf="item.isEditing" aria-label="Cancel edit">
+            <mat-icon>close</mat-icon>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>
