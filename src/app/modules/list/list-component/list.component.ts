@@ -5,6 +5,7 @@ import { AbstractControlOptions, FormControl, FormGroup, Validators } from '@ang
 import * as moment from 'moment';
 import { HelperService } from '../../helpers/helper.service';
 import { LocalStorageService } from '../../helpers/local-storage.service';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-list-component',
@@ -14,7 +15,6 @@ import { LocalStorageService } from '../../helpers/local-storage.service';
 export class ListComponent implements OnInit {
   public itemForm: FormGroup;
   public items: Item[];
-
   private inputValidationOptions: AbstractControlOptions = {
     validators: Validators.required,
     updateOn: 'blur'
@@ -74,5 +74,10 @@ export class ListComponent implements OnInit {
 
   onCancel(item): void {
     this.listService.removePendingUpdates(item);
+  }
+
+  move(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.items, event.previousIndex, event.currentIndex);
+    this.localStorageService.storeOnLocalStorage(this.items);
   }
 }
