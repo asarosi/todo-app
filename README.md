@@ -1,14 +1,15 @@
 # TodoApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.20.
+A simple todo list application, generated with  [Angular CLI](https://github.com/angular/angular-cli) version 8.3.20., with the following features:
+
+* Create, edit, complete and delete list items.
+* Deadline indicator with 3 different colors.
+* Drag and drop list item order.
+* Stores list items in browser's local storage.
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
 
